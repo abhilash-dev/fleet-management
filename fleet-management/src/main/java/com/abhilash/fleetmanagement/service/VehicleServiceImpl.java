@@ -3,10 +3,10 @@ package com.abhilash.fleetmanagement.service;
 import com.abhilash.fleetmanagement.dao.VehicleDao;
 import com.abhilash.fleetmanagement.dao.VehicleLocation;
 import com.abhilash.fleetmanagement.exception.ResourceNotFoundException;
-import com.abhilash.fleetmanagement.model.Reading;
-import com.abhilash.fleetmanagement.model.Vehicle;
 import com.abhilash.fleetmanagement.repository.ReadingRepo;
 import com.abhilash.fleetmanagement.repository.VehicleRepo;
+import com.abhilash.fleetmanagement.util.ReadingUtil;
+import com.abhilash.fleetmanagement.util.VehicleUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,29 +26,7 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public List<VehicleDao> getAllVehicles() {
-        return vehicleRepo.findAll().stream().map(this::mapToDao).collect(Collectors.toList());
-    }
-
-    private VehicleDao mapToDao(Vehicle vehicle) {
-        return VehicleDao.builder()
-                .vin(vehicle.getVin())
-                .lastServiceDate(vehicle.getLastServiceDate())
-                .make(vehicle.getMake())
-                .maxFuelVolume(vehicle.getMaxFuelVolume())
-                .model(vehicle.getModel())
-                .redlineRpm(vehicle.getRedlineRpm())
-                .year(vehicle.getYear()).build();
-    }
-
-    private Vehicle mapToEntity(VehicleDao vehicle) {
-        return Vehicle.builder()
-                .vin(vehicle.getVin())
-                .lastServiceDate(vehicle.getLastServiceDate())
-                .make(vehicle.getMake())
-                .maxFuelVolume(vehicle.getMaxFuelVolume())
-                .model(vehicle.getModel())
-                .redlineRpm(vehicle.getRedlineRpm())
-                .year(vehicle.getYear()).build();
+        return vehicleRepo.findAll().stream().map(VehicleUtil::mapToDao).collect(Collectors.toList());
     }
 
     @Override
@@ -63,19 +41,11 @@ public class VehicleServiceImpl implements VehicleService {
 
         Instant to = Instant.now();
         Instant from = to.minus(30, ChronoUnit.MINUTES);
-        return readingRepo.findAllByTimestampBetweenAndVinOrderByTimestampDesc(from, to, vin).stream().map(this::mapToLocation).collect(Collectors.toList());
-    }
-
-    private VehicleLocation mapToLocation(Reading reading) {
-        return VehicleLocation.builder()
-                .latitude(reading.getLatitude())
-                .longitude(reading.getLongitude())
-                .timestamp(reading.getTimestamp())
-                .build();
+        return readingRepo.findAllByTimestampBetweenAndVinOrderByTimestampDesc(from, to, vin).stream().map(ReadingUtil::mapToLocation).collect(Collectors.toList());
     }
 
     @Override
     public void addVehicles(List<VehicleDao> vehicles) {
-        vehicles.stream().map(this::mapToEntity).forEach(vehicleRepo::save);
+        vehicles.stream().map(VehicleUtil::mapToEntity).forEach(vehicleRepo::save);
     }
 }

@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import static com.abhilash.fleetmanagement.util.ReadingUtil.mapToEntity;
+
 @Service
 @Slf4j
 @AllArgsConstructor
@@ -19,45 +21,14 @@ public class ReadingServiceImpl implements ReadingService {
     private final TiresRepo tiresRepo;
 
     @Override
-    public void addReading(ReadingDao readingDao) {
+    public long addReading(ReadingDao readingDao) {
         if (vehicleRepo.existsById(readingDao.getVin())) {
             Reading reading = mapToEntity(readingDao);
             tiresRepo.save(reading.getTires());
-            readingRepo.save(reading);
+            Reading savedReading = readingRepo.save(reading);
+            return savedReading.getId();
         } else {
             throw new ResourceNotFoundException("The Vehicle with the following ID:" + readingDao.getVin() + " doesn't exist");
         }
-    }
-
-    private Reading mapToEntity(ReadingDao readingDao) {
-        return Reading.builder()
-                .checkEngineLightOn(readingDao.isCheckEngineLightOn())
-                .cruiseControlOn(readingDao.isCruiseControlOn())
-                .engineCoolantLow(readingDao.isEngineCoolantLow())
-                .engineHp(readingDao.getEngineHp())
-                .engineRpm(readingDao.getEngineRpm())
-                .fuelVolume(readingDao.getFuelVolume())
-                .latitude(readingDao.getLatitude())
-                .longitude(readingDao.getLongitude())
-                .speed(readingDao.getSpeed())
-                .timestamp(readingDao.getTimestamp())
-                .tires(readingDao.getTires())
-                .vin(readingDao.getVin()).build();
-    }
-
-    private ReadingDao mapToDao(Reading reading) {
-        return ReadingDao.builder()
-                .checkEngineLightOn(reading.isCheckEngineLightOn())
-                .cruiseControlOn(reading.isCruiseControlOn())
-                .engineCoolantLow(reading.isEngineCoolantLow())
-                .engineHp(reading.getEngineHp())
-                .engineRpm(reading.getEngineRpm())
-                .fuelVolume(reading.getFuelVolume())
-                .latitude(reading.getLatitude())
-                .longitude(reading.getLongitude())
-                .speed(reading.getSpeed())
-                .timestamp(reading.getTimestamp())
-                .tires(reading.getTires())
-                .vin(reading.getVin()).build();
     }
 }

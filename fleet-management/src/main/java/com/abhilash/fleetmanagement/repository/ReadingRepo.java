@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Repository
-public interface ReadingRepo extends JpaRepository<Reading, String> {
+public interface ReadingRepo extends JpaRepository<Reading, Long> {
     List<Reading> findAllByTimestampBetweenAndVinOrderByTimestampDesc(Instant from, Instant to, String vin);
 
     boolean existsByVin(String vin);
