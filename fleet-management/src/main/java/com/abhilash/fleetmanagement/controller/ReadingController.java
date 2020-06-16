@@ -1,6 +1,7 @@
 package com.abhilash.fleetmanagement.controller;
 
 import com.abhilash.fleetmanagement.dao.ReadingDao;
+import com.abhilash.fleetmanagement.service.AlertService;
 import com.abhilash.fleetmanagement.service.ReadingService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +16,12 @@ import org.springframework.web.bind.annotation.*;
 public class ReadingController {
 
     private final ReadingService readingService;
+    private final AlertService alertService;
 
     @PostMapping
     public ResponseEntity addReadings(@RequestBody ReadingDao readingDao) {
-        readingService.addReading(readingDao);
+        long id = readingService.addReading(readingDao);
+        alertService.check(id);
         return ResponseEntity.ok().build();
     }
 }
