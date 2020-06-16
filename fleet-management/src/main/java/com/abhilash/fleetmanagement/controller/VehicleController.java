@@ -19,7 +19,7 @@ public class VehicleController {
     private final VehicleService vehicleService;
 
     @PutMapping
-    public ResponseEntity addVehicles(@RequestBody List<VehicleDao> vehicles) {
+    public ResponseEntity<String> addVehicles(@RequestBody List<VehicleDao> vehicles) {
         vehicleService.addVehicles(vehicles);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
