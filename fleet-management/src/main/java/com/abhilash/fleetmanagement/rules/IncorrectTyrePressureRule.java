@@ -36,6 +36,7 @@ public class IncorrectTyrePressureRule {
                 .timestamp(reading.getTimestamp())
                 .priority(AlertPriority.LOW)
                 .vin(reading.getVin())
+                .description("Rule: tyre pressure of any tyre < 32 PSI or > 36 PSI")
                 .build());
     }
 }

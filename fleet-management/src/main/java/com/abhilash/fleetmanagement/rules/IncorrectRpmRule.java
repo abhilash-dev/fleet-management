@@ -32,6 +32,7 @@ public class IncorrectRpmRule {
                 .timestamp(reading.getTimestamp())
                 .priority(AlertPriority.HIGH)
                 .vin(reading.getVin())
+                .description("Rule: engineRpm > redlineRpm")
                 .build());
     }
 }

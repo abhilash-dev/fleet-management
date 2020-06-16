@@ -31,6 +31,7 @@ public class FaultyEngineProblemRule {
                 .timestamp(reading.getTimestamp())
                 .priority(AlertPriority.LOW)
                 .vin(reading.getVin())
+                .description("Rule: engineCoolantLow = True || checkEngineLightOn = True")
                 .build());
     }
 }

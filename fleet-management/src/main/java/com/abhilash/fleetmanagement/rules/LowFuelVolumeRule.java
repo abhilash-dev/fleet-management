@@ -32,6 +32,7 @@ public class LowFuelVolumeRule {
                 .timestamp(reading.getTimestamp())
                 .priority(AlertPriority.MEDIUM)
                 .vin(reading.getVin())
+                .description("Rule: Fuel Volume < 10% maxFuelVolume")
                 .build());
     }
 }

@@ -24,5 +24,6 @@ public class Alert {
     private AlertPriority priority;
     private String vin;
     private Instant timestamp;
+    private String description;
     private long readingId;
 }
