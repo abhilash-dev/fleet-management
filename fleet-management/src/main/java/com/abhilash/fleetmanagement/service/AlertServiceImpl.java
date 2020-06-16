@@ -1,7 +1,9 @@
 package com.abhilash.fleetmanagement.service;
 
 import com.abhilash.fleetmanagement.dao.AlertDao;
+import com.abhilash.fleetmanagement.exception.BadRequestException;
 import com.abhilash.fleetmanagement.exception.ResourceNotFoundException;
+import com.abhilash.fleetmanagement.model.AlertPriority;
 import com.abhilash.fleetmanagement.model.Reading;
 import com.abhilash.fleetmanagement.model.Vehicle;
 import com.abhilash.fleetmanagement.repository.AlertRepo;
@@ -15,6 +17,7 @@ import org.jeasy.rules.api.Facts;
 import org.jeasy.rules.api.Rules;
 import org.jeasy.rules.api.RulesEngine;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -35,6 +38,10 @@ public class AlertServiceImpl implements AlertService {
 
     @Override
     public List<AlertDao> getVehiclesHistoricalAlerts(String vin) {
+        if (!StringUtils.hasText(vin)) {
+            throw new BadRequestException("Bad Request: Invalid vin - " + vin);
+        }
+
         if (!vehicleRepo.existsById(vin)) {
             throw new ResourceNotFoundException("Invalid vin: " + vin + "No vehicles found!");
         }
@@ -54,7 +61,7 @@ public class AlertServiceImpl implements AlertService {
         Instant to = Instant.now();
         Instant from = to.minus(differenceFromNow, unit);
 
-        return alertRepo.findAllByTimestampBetweenOrderByTimestampDesc(from, to).stream()
+        return alertRepo.findAllByPriorityAndTimestampBetweenOrderByTimestampDesc(AlertPriority.HIGH, from, to).stream()
                 .map(Alertutil::mapToDao)
                 .collect(Collectors.toList());
     }
