@@ -20,7 +20,7 @@ public class VehicleLocationController {
     private final VehicleService vehicleService;
 
     @GetMapping("/{vin}")
-    public ResponseEntity<List<VehicleLocation>> getVehicleLocation(@PathVariable String vin) {
+    public ResponseEntity<List<VehicleLocation>> getVehicleLocation(@PathVariable("vin") String vin) {
         return ResponseEntity.ok(vehicleService.getLocationHistory(vin));
     }
 }

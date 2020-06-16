@@ -19,8 +19,8 @@ import java.util.List;
 public class AlertController {
     private AlertService alertService;
 
-    @GetMapping(value = "/{VIN}")
-    public ResponseEntity<List<AlertDao>> getVehiclesHistoricalAlerts(@PathVariable String vin) {
+    @GetMapping(value = "/{vin}")
+    public ResponseEntity<List<AlertDao>> getVehiclesHistoricalAlerts(@PathVariable("vin") String vin) {
         return ResponseEntity.ok(alertService.getVehiclesHistoricalAlerts(vin));
     }
 

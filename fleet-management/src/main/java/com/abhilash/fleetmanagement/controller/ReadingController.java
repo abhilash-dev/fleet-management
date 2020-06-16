@@ -19,7 +19,7 @@ public class ReadingController {
     private final AlertService alertService;
 
     @PostMapping
-    public ResponseEntity addReadings(@RequestBody ReadingDao readingDao) {
+    public ResponseEntity<String> addReadings(@RequestBody ReadingDao readingDao) {
         long id = readingService.addReading(readingDao);
         alertService.check(id);
         return ResponseEntity.ok().build();
