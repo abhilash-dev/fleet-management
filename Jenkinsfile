@@ -15,7 +15,7 @@ node {
        }
 
        stage("mvn build") {
-           sh "mvn clean install"
+           sh "fleet-management/mvn clean install"
        }
 
        stage("docker build") {
