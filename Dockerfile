@@ -6,4 +6,4 @@ RUN touch /app.jar && mkdir -p /config
 WORKDIR /
 EXPOSE 8080
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
-CMD ["java","-jar","-Dspring.profiles.active=dev","/app.jar"]
+CMD ["java","-Dspring.profiles.active=dev","-jar","/app.jar"]
