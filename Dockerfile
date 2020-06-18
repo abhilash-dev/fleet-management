@@ -6,4 +6,4 @@ RUN touch /app.jar && mkdir -p /config
 WORKDIR /
 EXPOSE 8080
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
-CMD ["java","-jar","app.jar"]
+CMD ["java -jar /app.jar"]
