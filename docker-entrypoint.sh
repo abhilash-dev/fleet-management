@@ -8,6 +8,6 @@ if [ -d /run/secrets/ ]; then
     done
 fi
 
-echo "Properties created, running $@"
+echo "Properties created, running jar file now"
 
 sh -c "$@"
